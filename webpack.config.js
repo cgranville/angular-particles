@@ -16,7 +16,8 @@ module.exports = {
     }
   }],
   devServer: {
-    contentBase: './demo/'
+    contentBase: './demo/',
+    quiet:true
   },
   module: {
     preLoaders: [{

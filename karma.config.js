@@ -1,36 +1,46 @@
+var path = require("path");
 module.exports = function(config) {
   config.set({
     // frameworks to use
+    basePath: '',
     frameworks: ['jasmine'],
     files: [
       // only specify one entry point
       // and require all tests in there
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
-      'src/particles.js',
       'src/test-index.js'
     ],
 
     preprocessors: {
       // add webpack as preprocessor
-      'src/particles.js': ['webpack'],
       'src/test-index.js': ['webpack']
     },
     //reporters
     reporters: ['spec', 'coverage'],
 
-    // webpack: {
-    //   // karma watches the test entry points
-    //   // (you don't need to specify the entry option)
-    //   // webpack watches dependencies
-    //   // webpack configuration
-    // },
-    webpack: require('./webpack.config.js'),
+    webpack: {
+      module: {
+        preLoaders: [{
+          test: /\.css$/,
+          include: path.resolve("./src/"),
+          loader: 'style-loader!css-loader'
+        }, {
+          test: /\.js$/,
+          include: path.resolve("./src/"),
+          loader: "isparta"
+        }]
+      }
+    },
 
     webpackMiddleware: {
       // webpack-dev-middleware configuration
       // i. e.
       noInfo: true
+    },
+    coverageReporter: {
+      type: "html",
+      dir: "./coverage/"
     },
     plugins: [
       require("karma-webpack"),
