@@ -4,7 +4,9 @@
   "description": "Angular wrapper over particles.js",
   "main": "lib/bundle.js",
   "scripts": {
-    "test": "karma start karma.config.js"
+    "test": "karma start karma.config.js",
+    "build":"webpack && webpack -p -d --config webpack.production.config.js",
+    "server":"webpack-dev-server"
   },
   "keywords": [
     "particles",

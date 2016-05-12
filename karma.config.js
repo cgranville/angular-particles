@@ -46,10 +46,10 @@ module.exports = function(config) {
       require("karma-webpack"),
       require("karma-jasmine"),
       require("karma-coverage"),
-      require("karma-chrome-launcher"),
+      require("karma-phantomjs-launcher"),
       require("karma-spec-reporter")
     ],
     singleRun: false,
-    browsers: ['Chrome']
+    browsers: ['PhantomJS']
   });
 };
