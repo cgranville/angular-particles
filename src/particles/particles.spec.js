@@ -1,13 +1,14 @@
 /*jshint strict:false */
 describe('Particles ', function() {
-  var $compile, $rootScope, $scope, $httpBackend, element, canvas;
+  var $compile, $rootScope, $scope, $httpBackend,$log, element, canvas;
 
   beforeEach(function() {
     angular.mock.module('particles.js');
-    angular.mock.inject(function(_$compile_, _$rootScope_, _$httpBackend_) {
+    angular.mock.inject(function(_$compile_, _$rootScope_, _$httpBackend_,_$log_) {
       $rootScope = _$rootScope_;
       $compile = _$compile_;
       $httpBackend = _$httpBackend_;
+      $log = _$log_;
     });
     element = angular.element('<particles/>');
     angular.element(document.body).append(element);
@@ -83,10 +84,12 @@ describe('Particles ', function() {
     });
 
     it('should throw error on failed configuration via Ajax', function() {
+      spyOn($log,'log');
       backendRequest.respond(404, {});
       $rootScope.$digest();
       $httpBackend.flush();
-      expect(window.pJSDom.length).toEqual(0);
+      expect($log.log).toHaveBeenCalledWith('Error pJS - XMLHttpRequest status: 404');
+      expect($log.log).toHaveBeenCalledWith( 'Error pJS - File config not found');
     });
   });
 });
