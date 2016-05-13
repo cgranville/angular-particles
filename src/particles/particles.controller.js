@@ -31,13 +31,6 @@ var particlesController = function(particlesModule) {
         ParticlesService.updatePJSBackground(_this.pJSInstance);
       };
 
-      this.updateElBackground = function(finalConfig) {
-        $element.css({
-          'background-color': finalConfig.background.color || 'transparent',
-          'background-image': finalConfig.background.image ? 'url("' + finalConfig.background.image + '")' : 'none'
-        });
-      };
-
       this.$onInit = function() {
         //Add a unique id to the element if one is not provided.
         _this.uid = $attrs.id || (ParticlesService.uid() + '-' + ParticlesService.uid(true));

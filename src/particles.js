@@ -7,10 +7,10 @@ require('./particles/particles.css');
 //Create the angular particles module
 var particlesModule = angular.module('particles.js', []);
 //Particles Service
-require('./particles/particles.service.js')(particlesModule);
+require('./particles/particles.service')(particlesModule);
 //Particles Controller
-require('./particles/particles.controller.js')(particlesModule);
+require('./particles/particles.controller')(particlesModule);
 //Particles component
-require('./particles/particles.component.js')(particlesModule);
+require('./particles/particles.component')(particlesModule);
 //Export the name of the module
 module.exports = particlesModule.name;

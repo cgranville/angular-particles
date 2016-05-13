@@ -1,11 +1,29 @@
-var path = require('path');
+const path = require('path');
+const webpack = require('webpack');
+var plugins = [];
+var sourceMap = true;
+var outputFileName = 'bundle.js';
+
+//If production mode
+if (process.argv[2] === '--production') {
+  outputFileName = 'bundle.min.js';
+  sourceMap = false;
+  //UglifyJS plugin
+  plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: {
+      warnings: false,
+      drop_console: true
+    }
+  }))
+}
+
 module.exports = {
   entry: './src/particles.js',
   output: {
     path: './lib',
-    publicPath: "/lib/",
-    filename: 'bundle.js',
-    libraryTarget: "umd"
+    publicPath: '/lib/',
+    filename: outputFileName,
+    libraryTarget: 'umd'
   },
   externals: [{
     angular: {
@@ -15,22 +33,31 @@ module.exports = {
       amd: 'angular'
     }
   }],
+  devtool: sourceMap ? 'source-map' : null,
   devServer: {
-    contentBase: './demo/',
-    quiet:true
+    contentBase: './demo/'
+  },
+  resolve: {
+    modulesDirectories: ['node_modules'],
+    extensions: ['', '.js']
   },
   module: {
     preLoaders: [{
-      test: /\.js$/, // include .js files
-      exclude: /node_modules/, // exclude any and all files in the node_modules folder
-      loader: "jshint-loader"
+      test: /\.js$/,
+      include: [
+        path.resolve(__dirname, 'src')
+      ],
+      loader: 'jshint-loader'
     }],
     loaders: [{
       test: /\.css$/,
-      exclude: /node_modules/,
+      include: [
+        path.resolve(__dirname, 'src')
+      ],
       loader: 'style-loader!css-loader'
     }]
   },
+  plugins: plugins,
   jshint: {
     curly: true,
     eqeqeq: true,
@@ -38,10 +65,9 @@ module.exports = {
       'angular': true,
       'window': true,
       'particlesJS': true,
-      'console': true,
-      'document': true,
-      'window': true
+      'console': true
     },
+    browser: true,
     quotmark: 'single',
     strict: true,
     undef: true,

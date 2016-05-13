@@ -1,6 +1,11 @@
 angular
   .module('particles.test', ['particles.js'])
   .controller('MainController', ['$scope','$timeout', function($scope,$timeout) {
+
+    $scope.myCallback = function(){
+      alert('Ajax config loaded successfully');
+    };
+
     $scope.config = {
       'particles': {
         'number': {

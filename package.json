@@ -5,13 +5,16 @@
   "main": "lib/bundle.js",
   "scripts": {
     "test": "karma start karma.config.js",
-    "build":"webpack && webpack -p -d --config webpack.production.config.js",
-    "server":"webpack-dev-server"
+    "build-dev": "webpack",
+    "build-prod": "webpack --production",
+    "build": "npm run-script build-dev && npm run-script build-prod",
+    "server": "webpack-dev-server --inline"
   },
   "keywords": [
     "particles",
     "canvas",
-    "webpack"
+    "webpack",
+    "angular"
   ],
   "author": "Nisheed Jagadish",
   "license": "ISC",
@@ -23,7 +26,6 @@
     "jshint": "^2.9.2",
     "jshint-loader": "^0.8.3",
     "karma": "^0.13.22",
-    "karma-chrome-launcher": "^1.0.1",
     "karma-coverage": "^1.0.0",
     "karma-jasmine": "^1.0.2",
     "karma-phantomjs-launcher": "^1.0.0",

@@ -38,7 +38,7 @@ var particlesService = function(particlesModule) {
       var canvasParent = pJSInstance.canvas.el.parentNode;
       canvasParent.style.background = null;
       canvasParent.style.backgroundImage = pJSInstance.background.image ? 'url("' + pJSInstance.background.image + '")' : 'none';
-      canvasParent.style.backgroundColor = pJSInstance.background.color || 'transparent';
+      canvasParent.style.backgroundColor = pJSInstance.background.color ? pJSInstance.background.color : 'transparent';
     };
 
     var updatePJSInstance = function(instanceObj, newValue) {

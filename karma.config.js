@@ -20,6 +20,17 @@ module.exports = function(config) {
     reporters: ['spec', 'coverage'],
 
     webpack: {
+      output: {
+        libraryTarget: 'umd'
+      },
+      externals: [{
+        angular: {
+          root: 'angular',
+          commonjs2: 'angular',
+          commonjs: 'angular',
+          amd: 'angular'
+        }
+      }],
       module: {
         preLoaders: [{
           test: /\.css$/,
@@ -49,7 +60,7 @@ module.exports = function(config) {
       require("karma-phantomjs-launcher"),
       require("karma-spec-reporter")
     ],
-    singleRun: false,
+    singleRun: true,
     browsers: ['PhantomJS']
   });
 };
