@@ -1,6 +1,6 @@
 {
-  "name": "ng-particles-js",
-  "version": "1.0.0",
+  "name": "angular-particles",
+  "version": "0.0.1",
   "description": "Angular wrapper over particles.js",
   "main": "lib/bundle.js",
   "scripts": {

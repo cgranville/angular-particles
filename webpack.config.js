@@ -10,7 +10,7 @@ var outputCSSFileName = 'angular-particles.css';
 if (process.argv[2] === '--production') {
   outputFileName = 'angular-particles.min.js';
   outputCSSFileName = 'angular-particles.min.css';
-  sourceMap = true;
+  //sourceMap = true;
   //UglifyJS plugin
   plugins.push(new webpack.optimize.UglifyJsPlugin({
     compress: {
