@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "Angular wrapper over particles.js",
   "main": "lib/bundle.js",
+  "repository": "https://github.com/nisheed2440/angular-particles.git",
   "scripts": {
     "test": "karma start karma.config.js",
     "build-dev": "webpack",

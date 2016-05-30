@@ -1,1 +1,3 @@
-#ng-particles-js
+#angular-particles
+
+##Readme coming soon!
