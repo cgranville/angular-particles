@@ -11,6 +11,6 @@ require('./particles/particles.service')(particlesModule);
 //Particles Controller
 require('./particles/particles.controller')(particlesModule);
 //Particles component
-require('./particles/particles.component')(particlesModule);
+require('./particles/particles.directive')(particlesModule);
 //Export the name of the module
 module.exports = particlesModule.name;

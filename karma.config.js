@@ -9,6 +9,7 @@ module.exports = function(config) {
       // and require all tests in there
       'node_modules/angular/angular.js',
       'node_modules/angular-mocks/angular-mocks.js',
+      'node_modules/particles.js/particles.js',
       'src/test-index.js'
     ],
 
@@ -24,6 +25,10 @@ module.exports = function(config) {
         libraryTarget: 'umd'
       },
       externals: [{
+        'particles.js': {
+          root: 'particlesJS'
+        }
+      }, {
         angular: {
           root: 'angular',
           commonjs2: 'angular',

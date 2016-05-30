@@ -1,15 +1,15 @@
 angular
   .module('particles.test', ['particles.js'])
-  .controller('MainController', ['$scope','$timeout', function($scope,$timeout) {
+  .controller('MainController', ['$scope', '$timeout', function($scope, $timeout) {
 
-    $scope.myCallback = function(){
+    $scope.myCallback = function() {
       alert('Ajax config loaded successfully');
     };
 
     $scope.config = {
       'particles': {
         'number': {
-          'value': 70
+          'value': 200
         },
         'color': {
           'value': ['#FF9900', '#424242', '#BCBCBC', '#3299BB']
@@ -29,31 +29,17 @@ angular
         'line_linked': {
           'enable': false
         }
-      },
-      'interactivity': {
-        'events': {
-          'onhover': {
-            'enable': false,
-          },
-          'onclick': {
-            'enable': false,
-          }
-        }
-      },
-      'background': {
-        'color': '#272727'
       }
     };
 
-    $timeout(function(){
-      $scope.config.particles.number.value = 1000;
-      $scope.config.particles.size.value = 1;
-      $scope.config.background.color = '#000000';
-      $scope.config.particles.line_linked.enable = false;
+    $timeout(function() {
+      $scope.config.particles.line_linked.enable = true;
       $scope.config.interactivity.events.onclick.enable = true;
+      $scope.config.interactivity.events.onhover.enable = true;
       $scope.config.interactivity.events.onclick.mode = 'push';
-      $scope.config.background.image = 'https://d14xs1qewsqjcd.cloudfront.net/assets/bg-header-star.jpg';
-    },5000);
+      $scope.config.interactivity.events.onhover.mode = 'repulse';
+      $scope.config.interactivity.events.resize = false;
+    }, 5000);
   }]);
 
 angular.element(document).ready(function() {

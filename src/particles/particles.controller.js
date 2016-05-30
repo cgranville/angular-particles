@@ -1,4 +1,4 @@
-var particlesController = function(particlesModule) {
+var particlesController = function (particlesModule) {
   'use strict';
 
   particlesModule.controller('ParticlesController', [
@@ -6,73 +6,75 @@ var particlesController = function(particlesModule) {
     '$element',
     '$attrs',
     '$http',
+    '$window',
     '$log',
     'ParticlesService',
-    function(
-      $scope,
-      $element,
-      $attrs,
-      $http,
-      $log,
-      ParticlesService
-    ) {
-      var _this = this;
-      this.pJSInstance = null;
-      this.configWatcher = null;
-      this.createPJSInstance = function() {
-        var finalConfig = angular.merge({
-          background: {
-            color: '#272727',
-            image: ''
-          }
-        }, _this.config);
-        particlesJS(_this.uid, finalConfig);
-        _this.pJSInstance = ParticlesService.getPJS(_this.uid);
-        ParticlesService.updatePJSBackground(_this.pJSInstance);
+    function ($scope, $element, $attrs, $http, $window, $log, ParticlesService) {
+
+      var PJS = {
+        instance: undefined,
+        index: undefined,
+        uid: undefined,
+        watchers: {
+          config: undefined
+        }
       };
 
-      this.$onInit = function() {
-        //Add a unique id to the element if one is not provided.
-        _this.uid = $attrs.id || (ParticlesService.uid() + '-' + ParticlesService.uid(true));
+      var createPJSInstance = function () {
+        var PJSConfig = angular.merge({},$scope.config);
+        $window.particlesJS(PJS.uid);
+        PJS.index = ParticlesService.getPJSIndex(PJS.uid);
+        PJS.instance = ParticlesService.getPJSInstance(PJS.index);
+        ParticlesService.updatePJS(PJS, PJSConfig);
+      };
 
-        $element.attr('id', _this.uid);
+      var initializePJS = function () {
+        //Add a unique id to the element if one is not provided.
+        PJS.uid = $attrs.id || (ParticlesService.uid() + '-' + ParticlesService.uid(true));
+
+        $element.attr('id', PJS.uid);
         $element.addClass('ng-particles');
 
-        if (_this.loadConfig) {
+        if ($scope.loadConfig) {
           $http
-            .get(_this.loadConfig)
-            .then(function(response) {
+            .get($scope.loadConfig)
+            .then(function (response) {
 
-              _this.config = response.data;
-              _this.createPJSInstance();
+              $scope.config = response.data;
+              createPJSInstance();
 
-              if (typeof _this.loadCallback === 'function') {
-                _this.loadCallback();
+              if (typeof $scope.loadCallback === 'function') {
+                $scope.loadCallback();
               }
 
-            }, function(response) {
+            }, function (response) {
               $log.log('Error pJS - XMLHttpRequest status: ' + response.status);
               $log.log('Error pJS - File config not found');
             });
         } else {
-          _this.createPJSInstance();
-          _this.configWatcher = $scope.$watch('ctrl.config', function(newValue, oldValue) {
+          createPJSInstance();
+          PJS.watchers.config = $scope.$watch('config', function (newValue, oldValue) {
             if (newValue !== oldValue) {
-              ParticlesService.updatePJS(_this.pJSInstance, newValue);
+              ParticlesService.updatePJS(PJS, newValue);
             }
           }, true);
         }
       };
 
-      this.$onDestroy = function() {
-        if (_this.pJSInstance) {
-          ParticlesService.destroyPJS(_this.pJSInstance);
+      $scope.$on('$destroy', function () {
+        if (PJS.instance) {
+          ParticlesService.destroyPJS(PJS);
+          PJS.instance = undefined;
+          PJS.uid = undefined;
         }
         //destroy configWatcher;
-        if (_this.configWatcher) {
-          _this.configWatcher();
+        if (PJS.watchers.config) {
+          PJS.watchers.config();
+          PJS.watchers.config = undefined;
         }
-      };
+      });
+
+      initializePJS();
     }
   ]);
 };

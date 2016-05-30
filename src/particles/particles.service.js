@@ -1,8 +1,8 @@
-var particlesService = function(particlesModule) {
+var particlesService = function (particlesModule) {
   'use strict';
 
-  particlesModule.factory('ParticlesService', function() {
-    var makeid = function(useNumbers) {
+  particlesModule.factory('ParticlesService', ['$window', function ($window) {
+    var makeId = function (useNumbers) {
       var text = '';
       var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
       if (useNumbers) {
@@ -14,9 +14,9 @@ var particlesService = function(particlesModule) {
       return text;
     };
 
-    var getInstanceIndex = function(elementId) {
-      for (var i = 0, l = window.pJSDom.length; i < l; i++) {
-        if (window.pJSDom[i].pJS.canvas.el.parentNode.id === elementId) {
+    var getInstanceIndex = function (elementId) {
+      for (var i = 0, l = $window.pJSDom.length; i < l; i++) {
+        if ($window.pJSDom[i].pJS.canvas.el.parentNode.id === elementId) {
           return i;
         } else {
           continue;
@@ -25,27 +25,36 @@ var particlesService = function(particlesModule) {
       return -1;
     };
 
-    var getPJSInstance = function(elementId) {
-      var instanceIndex = getInstanceIndex(elementId);
-      return {
-        instance: window.pJSDom[instanceIndex].pJS,
-        index: instanceIndex
-      };
+    var getPJSInstance = function (instanceIndex) {
+      return $window.pJSDom[instanceIndex].pJS;
     };
 
-    var updateElBackground = function(instanceObj) {
-      var pJSInstance = instanceObj.instance;
+    var updateElBackground = function (PJS) {
+      var pJSInstance = PJS.instance;
+      if (!pJSInstance) {
+        return;
+      }
       var canvasParent = pJSInstance.canvas.el.parentNode;
       canvasParent.style.background = null;
       canvasParent.style.backgroundImage = pJSInstance.background.image ? 'url("' + pJSInstance.background.image + '")' : 'none';
       canvasParent.style.backgroundColor = pJSInstance.background.color ? pJSInstance.background.color : 'transparent';
     };
 
-    var updatePJSInstance = function(instanceObj, newValue) {
-      var pJSInstance = instanceObj.instance;
+    var updatePJSInstance = function (PJS, newValue) {
+      var pJSInstance = PJS.instance;
+      if (!pJSInstance) {
+        return;
+      }
+
+      pJSInstance.background = pJSInstance.background || {
+        color: '#272727',
+        image: ''
+      };
+
       angular.merge(pJSInstance.background, newValue.background);
       angular.merge(pJSInstance.interactivity, newValue.interactivity);
       angular.merge(pJSInstance.particles, newValue.particles);
+
       //Individual tmp object properties
       pJSInstance.tmp.obj.size_value = pJSInstance.particles.size.value;
       pJSInstance.tmp.obj.size_anim_speed = pJSInstance.particles.size.anim.speed;
@@ -56,36 +65,40 @@ var particlesService = function(particlesModule) {
       pJSInstance.tmp.obj.mode_bubble_distance = pJSInstance.interactivity.modes.bubble.distance;
       pJSInstance.tmp.obj.mode_bubble_size = pJSInstance.interactivity.modes.bubble.size;
       pJSInstance.tmp.obj.mode_repulse_distance = pJSInstance.interactivity.modes.repulse.distance;
-      updateElBackground(instanceObj);
+      updateElBackground(PJS);
       pJSInstance.fn.particlesRefresh();
     };
 
-    var destroyPJSInstance = function(instanceObj) {
-      window.cancelAnimationFrame(instanceObj.instance.fn.drawAnimFrame);
+    var destroyPJSInstance = function (PJS) {
+      var pJSInstance = PJS.instance;
+      if (!pJSInstance) {
+        return;
+      }
+      $window.cancelAnimationFrame(pJSInstance.fn.drawAnimFrame);
       //remove background styles
-      var canvasParent = instanceObj.instance.canvas.el.parentNode;
+      var canvasParent = pJSInstance.canvas.el.parentNode;
       canvasParent.style.background = null;
       canvasParent.style.backgroundImage = null;
       canvasParent.style.backgroundColor = null;
 
       //remove the canvas element;
-      instanceObj.instance.canvas.el.remove();
+      pJSInstance.canvas.el.remove();
 
-      //Remove instance from the window object
-      if (instanceObj.index > -1) {
-        window.pJSDom.splice(instanceObj.index, 1);
+      //Remove instance from the $window object
+      if (PJS.index > -1) {
+        $window.pJSDom.splice(PJS.index, 1);
       }
-      instanceObj = null;
     };
 
     return {
-      uid: makeid,
-      getPJS: getPJSInstance,
+      uid: makeId,
+      getPJSInstance: getPJSInstance,
+      getPJSIndex: getInstanceIndex,
       destroyPJS: destroyPJSInstance,
       updatePJS: updatePJSInstance,
       updatePJSBackground: updateElBackground
     };
-  });
+  }]);
 };
 
 module.exports = particlesService;

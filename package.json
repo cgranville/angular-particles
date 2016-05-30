@@ -8,7 +8,7 @@
     "build-dev": "webpack",
     "build-prod": "webpack --production",
     "build": "npm run-script build-dev && npm run-script build-prod",
-    "server": "webpack-dev-server --inline"
+    "server": "webpack-dev-server"
   },
   "keywords": [
     "particles",
@@ -21,6 +21,7 @@
   "devDependencies": {
     "angular-mocks": "^1.5.5",
     "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "isparta-loader": "^2.0.0",
     "jasmine-core": "^2.4.1",
     "jshint": "^2.9.2",
