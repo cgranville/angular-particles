@@ -1,6 +1,6 @@
 {
   "name": "angular-particles",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "description": "Angular wrapper over particles.js",
   "main": "lib/bundle.js",
   "repository": "https://github.com/nisheed2440/angular-particles.git",
