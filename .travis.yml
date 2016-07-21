@@ -1,5 +1,10 @@
-language: node_jsS
+sudo: required
+language: node_js
 node_js:
   - "5.11"
-before_script:
+before_install:
   - npm install -g webpack
+install:
+  - npm install
+script:
+  - npm run test
