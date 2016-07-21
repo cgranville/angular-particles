@@ -1,4 +1,4 @@
-language: javascript
+language: node_jsS
 node_js:
   - "5.11"
 before_script:
