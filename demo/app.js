@@ -34,11 +34,19 @@ angular
 
     $timeout(function() {
       $scope.config.particles.line_linked.enable = true;
-      $scope.config.interactivity.events.onclick.enable = true;
-      $scope.config.interactivity.events.onhover.enable = true;
-      $scope.config.interactivity.events.onclick.mode = 'push';
-      $scope.config.interactivity.events.onhover.mode = 'repulse';
-      $scope.config.interactivity.events.resize = false;
+      $scope.config.interactivity = {
+        events: {
+          onclick: {
+            enable: true,
+            mode: 'push'
+          },
+          onhover: {
+            enable: true,
+            mode: 'repulse'
+          },
+          resize: false
+        }
+      };
     }, 5000);
   }]);
 
